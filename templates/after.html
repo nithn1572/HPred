@@ -1,0 +1,208 @@
+<!-- #include <bits/stdc++.h>
+using namespace std;
+int main() {
+	string s;cin>>s;
+	vector<string>val;
+	vector<string>fr{"age","sex","cp","trestbps","chol","fbs","restecg","thalach","exang","oldpeak","slope","ca","thal"};
+	string temp;
+	for(int i=0;i<s.size();i++){
+		if(i==s.size()-1){
+			temp+=s[i];
+			val.push_back(temp);
+		}
+		else{
+			if(s[i]!=','){
+				temp+=s[i];
+			}else{
+				val.push_back(temp);
+				temp="";
+			}
+		}
+	}
+	cout<<"http://127.0.0.1:5000/after?";
+	for(int i=0;i<fr.size();i++){
+		if(i!=fr.size()-1) cout<<fr[i]<<"="<<val[i]<<"&";
+		else cout<<fr[i]<<"="<<val[i];
+	}
+	return 0;
+} -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Prediction</title>
+    <style>
+      /* a{
+        color: red;
+      }*/
+      /* a:visited{
+        color: green;
+      } */
+      ol{
+        background-color: rgb(0, 184, 0);
+        padding:2vh 2vw 2vh 2vw ;
+        border-radius: 5px;
+      }
+      li{
+        text-align: left;
+        letter-spacing:1px;
+      }
+      a{
+        color: black;
+        text-decoration: none;
+      }
+      a:hover{
+        font-weight: bold;
+        color: white;
+      }
+        .res1{
+            font-size: 50px;
+        }
+        .res2{
+            font-size: 50px;
+        }
+        .cont1{
+            background-color: rgb(229, 216, 252);
+            padding: 10px;
+            margin: 32vh 30vw 0vh 30vw;
+            border-radius: 10px;
+        }
+        .cont2{
+            background-color: rgb(229, 216, 252);
+            padding: 10vh;
+            margin: 5vh 30vw 0vh 30vw;
+            border-radius: 10px;
+        }
+      {% if prediction == "0" %}
+          body {
+              background-color: green;
+          }
+          .res1{
+            color:green;
+          }
+      {% else %}
+          {%if thal=="3" %}
+          body {
+              background-color: green;
+          }
+          .res1{
+            color:green;
+          }
+          {%else%}
+          body {
+              background-color: rgb(226, 4, 4);
+          }
+          .res2{
+            color: red;
+          }
+          {% endif %}
+      {% endif %}
+    </style>
+  </head>
+  <body>
+    <center>
+      {%if prediction == "0" %}
+      <div class="cont1">
+        <h1>PREDICTION :</h1>
+        <p class="res1"><b>Safe</b></p>
+      </div>
+      {% else %} {%if thal== "3"%}
+      <div class="cont1">
+        <h1>PREDICTION :</h1>
+        <p class="res1"><b>Safe</b></p>
+      </div>
+      {%else%}
+      <div class="cont2">
+        <h1>PREDICTION :</h1>
+        <p class="res2"><b>Not Safe</b></p>
+        <ol>
+          <h1>Tips :</h1>
+          <!-- {% if cp|int >= 5 %}
+            <p class="tips">{{ cp|int }}</p>
+            {% endif %} -->
+          <!-- <p class="tips">{{ trestbps|int }}</p> -->
+
+          <!-- trestbps -->
+          {% if trestbps|int >= 121 %}
+          <li>
+            <p class="tips">
+              <a
+                href="https://www.mayoclinic.org/diseases-conditions/high-blood-pressure/in-depth/high-blood-pressure/art-20046974"
+                target="_blank"
+              >
+                seems like your Blood Pressure is higher than normal
+              </a>
+            </p>
+          </li>
+          {% endif %}
+
+          <!-- cholestoral -->
+          {% if chol|int >= 170 %}
+          <li>
+            <p class="tips">
+              <a
+                href="https://www.mayoclinic.org/diseases-conditions/high-blood-cholesterol/in-depth/reduce-cholesterol/art-20045935"
+              >
+                seems like your cholestoral is higher than normal
+              </a>
+            </p>
+          </li>
+          {% endif %}
+
+          <!-- fasting blood pressure  -->
+          {% if fbs|int ==1 %}
+          <li>
+            <p class="tips">
+              <a
+                href="https://www.healthline.com/nutrition/14-ways-to-lower-blood-sugar#TOC_TITLE_HDR_3"
+              >
+                seems like your fasting blood sugar is higher than normal
+              </a>
+            </p>
+          </li>
+          {% endif %}
+
+          <!-- restecg -->
+          {% if restecg|int == 2 %}
+          <li>
+            <p class="tips">
+              <a
+                href="https://upperhillcardiovascularcentre.com/things-you-can-do-to-improve-your-heart-health/"
+              >
+                <!-- a simple, non-invasive test that records the electrical activity of the heart -->
+                resting electrocardiographic results is higher than normal
+              </a>
+            </p>
+          </li>
+          {% endif %} {% if exang|int == 1 %}
+          <li>
+            <p class="tips">
+              <a
+                href="https://www.bhf.org.uk/informationsupport/heart-matters-magazine/activity/exercising-with-a-heart-condition/exercising-with-angina#:~:text=If%20you%20suffer%20from%20angina,exercise%20helps%20them%20feel%20better."
+              >
+                exercise induced angina
+              </a>
+            </p>
+          </li>
+          {% endif %}
+
+          <!-- talch -->
+
+          {% if thalach|int >= 120 %}
+          <li>
+            <p class="tips">
+              <a
+                href="https://www.medicalnewstoday.com/articles/321310#:~:text=The%20easiest%20and%20most%20effective,consistently%20lower%20resting%20heart%20rate."
+              >
+                seems like your maximum heart rate is higher than normal
+              </a>
+            </p>
+          </li>
+          {% endif %}
+
+          <!-- https://www.medicalnewstoday.com/articles/321310#:~:text=The%20easiest%20and%20most%20effective,consistently%20lower%20resting%20heart%20rate. -->
+        </ol>
+      </div>
+      {%endif%} {% endif %}
+    </center>
+  </body>
+</html>
